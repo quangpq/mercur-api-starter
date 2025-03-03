@@ -1,0 +1,21 @@
+server_tokens off;
+
+server {
+    listen 80;
+    client_max_body_size 1024M;
+
+    gzip_static on;
+    gzip_vary on;
+    add_header Strict-Transport-Security 'max-age=15768000; includeSubDomains; preload' always;
+    add_header X-Content-Type-Options nosniff;
+    add_header X-XSS-Protection "1; mode=block";
+    add_header 'Referrer-Policy' 'origin-when-cross-origin';
+    add_header Access-Control-Allow-Origin '*';
+
+    location / {
+        alias /var/www/mercur/;
+        try_files $uri /$uri /index.html;
+        expires 7d;
+        add_header Cache-Control public;
+    }
+}

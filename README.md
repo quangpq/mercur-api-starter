@@ -29,3 +29,23 @@ When a product is created, the `store_id` of the currently logged-in user's stor
 Upon placing an order, the system automatically generates child orders for each vendor involved. This is achieved by iterating through each line item, checking the `store_id`, and grouping items from the same store into a single order. These child orders are then visible in the respective vendor's dashboard for processing.
 
 Feel free to extend and modify this starter as needed to suit your marketplace requirements.
+
+# Docker image1
+```bash
+docker build -t sqoonyv3/mercur .
+docker push sqoonyv3/mercur
+```
+
+```bash
+docker build -f admin.dockerfile -t sqoonyv3/mercur-admin .
+docker push sqoonyv3/mercur-admin
+```
+
+```bash
+docker build -f vendor.dockerfile -t sqoonyv3/mercur-vendor .
+docker push sqoonyv3/mercur-vendor
+```
+
+```bash
+docker compose -f docker-compose.yml --project-name mercur up -d
+```

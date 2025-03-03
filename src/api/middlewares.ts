@@ -13,7 +13,7 @@ export const config: MiddlewaresConfig = {
 		},
 		{
 			matcher: /^\/admin\/users\/(password-token|reset-password)$/,
-			middlewares: [adminCors],
+			middlewares: [cors(adminCors)],
 		},
 		{
 			matcher: '/vendor/*',

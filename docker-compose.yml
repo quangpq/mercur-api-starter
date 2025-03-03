@@ -1,5 +1,42 @@
-version: "3.8"
 services:
+  server:
+    image: sqoonyv3/mercur
+    command: ["yarn", "start"]
+    container_name: server
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./volumes/.env:/app/mercur/.env
+    ports:
+      - "9000:9000"
+    networks:
+      - mercur
+
+  admin:
+    image: sqoonyv3/mercur-admin
+    container_name: admin
+    depends_on:
+      - server
+      - postgres
+      - redis
+    ports:
+      - "7001:80"
+    networks:
+      - mercur
+
+  vendor:
+    image: sqoonyv3/mercur-vendor
+    container_name: vendor
+    depends_on:
+      - server
+      - postgres
+      - redis
+    ports:
+      - "7002:80"
+    networks:
+      - mercur
+
   postgres:
     image: postgres:16.2
     ports:
@@ -7,4 +44,21 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: marketplace
+      POSTGRES_DB: mercur
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+    networks:
+      - mercur
+
+  redis:
+    image: redis:7
+    container_name: redis
+    volumes:
+      - ./volumes/redis:/data
+    ports:
+      - "6479:6379"
+    networks:
+      - mercur
+
+networks:
+  mercur:
